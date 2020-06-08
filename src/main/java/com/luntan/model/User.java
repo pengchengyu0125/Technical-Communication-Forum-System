@@ -1,18 +1,18 @@
 package com.luntan.model;
 
 public class User {
-    private int id;
+    private Integer id;
     private String name;
     private String accountId;
     private String token;
     private double gmtCreate;
     private double gmtModified;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
