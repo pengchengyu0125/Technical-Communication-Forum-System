@@ -1,5 +1,6 @@
 package com.luntan.controller;
 
+import com.luntan.dto.PageDTO;
 import com.luntan.dto.PostDTO;
 import com.luntan.mapper.PostMapper;
 import com.luntan.mapper.UserMapper;
@@ -26,7 +27,9 @@ public class GreetingController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request,
-                        Model model){
+                        Model model,
+                        @RequestParam(name="page",defaultValue = "1") Integer page,
+                        @RequestParam(name="size",defaultValue = "5") Integer size){
         Cookie[] cookies=request.getCookies();
         if(cookies != null && cookies.length != 0)
         for (Cookie cookie : cookies){
@@ -39,8 +42,8 @@ public class GreetingController {
                 break;
             }
         }
-        List<PostDTO> postList = postService.list();
-        model.addAttribute("posts",postList);
+        PageDTO pagination = postService.list(page,size);
+        model.addAttribute("pagination",pagination);
         return "index";
     }
 }

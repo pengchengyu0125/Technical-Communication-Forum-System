@@ -1,5 +1,6 @@
 package com.luntan.service;
 
+import com.luntan.dto.PageDTO;
 import com.luntan.dto.PostDTO;
 import com.luntan.mapper.PostMapper;
 import com.luntan.mapper.UserMapper;
@@ -20,9 +21,11 @@ public class PostService {
     @Autowired
     private UserMapper userMapper;
 
-    public List<PostDTO> list() {
-        List<Post> posts = postMapper.list();
+    public PageDTO list(Integer page, Integer size) {
+        Integer offset=size*(page-1);
+        List<Post> posts = postMapper.list(offset,size);
         List<PostDTO> postDTOList = new ArrayList<>();
+        PageDTO pageDTO = new PageDTO();
         for(Post post : posts){
             User user=userMapper.findById(post.getCreater());
             PostDTO postDTO = new PostDTO();
@@ -30,6 +33,9 @@ public class PostService {
             postDTO.setUser(user);
             postDTOList.add(postDTO);
         }
-        return postDTOList;
+        pageDTO.setPosts(postDTOList);
+        Integer totalCount=postMapper.count();
+        pageDTO.setPagination(totalCount,page,size);
+        return pageDTO;
     }
 }
