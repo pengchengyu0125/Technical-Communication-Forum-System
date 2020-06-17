@@ -22,10 +22,20 @@ public class PostService {
     private UserMapper userMapper;
 
     public PageDTO list(Integer page, Integer size) {
+        PageDTO pageDTO = new PageDTO();
+        Integer totalCount=postMapper.count();
+        pageDTO.setPagination(totalCount,page,size);
+        if (page<1){
+            page=1;
+        }
+        if (page>pageDTO.getTotalPage()) {
+            page=pageDTO.getTotalPage();
+        }
+
         Integer offset=size*(page-1);
         List<Post> posts = postMapper.list(offset,size);
         List<PostDTO> postDTOList = new ArrayList<>();
-        PageDTO pageDTO = new PageDTO();
+
         for(Post post : posts){
             User user=userMapper.findById(post.getCreater());
             PostDTO postDTO = new PostDTO();
@@ -34,8 +44,7 @@ public class PostService {
             postDTOList.add(postDTO);
         }
         pageDTO.setPosts(postDTOList);
-        Integer totalCount=postMapper.count();
-        pageDTO.setPagination(totalCount,page,size);
+
         return pageDTO;
     }
 }
