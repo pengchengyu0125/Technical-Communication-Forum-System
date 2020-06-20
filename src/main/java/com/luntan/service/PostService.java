@@ -23,15 +23,21 @@ public class PostService {
 
     public PageDTO list(Integer page, Integer size) {
         PageDTO pageDTO = new PageDTO();
+        Integer totalPage;
         Integer totalCount=postMapper.count();
-        pageDTO.setPagination(totalCount,page,size);
+        if(totalCount%size==0){
+            totalPage=totalCount/size;
+        }
+        else {
+            totalPage=totalCount/size+1;
+        }
         if (page<1){
             page=1;
         }
-        if (page>pageDTO.getTotalPage()) {
-            page=pageDTO.getTotalPage();
+        if (page>totalPage) {
+            page=totalPage;
         }
-
+        pageDTO.setPagination(totalPage,page);
         Integer offset=size*(page-1);
         List<Post> posts = postMapper.list(offset,size);
         List<PostDTO> postDTOList = new ArrayList<>();
@@ -50,15 +56,21 @@ public class PostService {
 
     public PageDTO list(Integer userId, Integer page, Integer size) {
         PageDTO pageDTO = new PageDTO();
+        Integer totalPage;
         Integer totalCount=postMapper.countByUserId(userId);
-        pageDTO.setPagination(totalCount,page,size);
+        if(totalCount%size==0){
+            totalPage=totalCount/size;
+        }
+        else {
+            totalPage=totalCount/size+1;
+        }
         if (page<1){
             page=1;
         }
-        if (page>pageDTO.getTotalPage()) {
-            page=pageDTO.getTotalPage();
+        if (page>totalPage) {
+            page=totalPage;
         }
-
+        pageDTO.setPagination(totalPage,page);
         Integer offset=size*(page-1);
         List<Post> posts = postMapper.listByUserId(userId,offset,size);
         List<PostDTO> postDTOList = new ArrayList<>();
