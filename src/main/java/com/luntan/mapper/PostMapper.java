@@ -1,5 +1,6 @@
 package com.luntan.mapper;
 
+import com.luntan.dto.PostDTO;
 import com.luntan.model.Post;
 import com.luntan.model.User;
 import org.apache.ibatis.annotations.Insert;
@@ -25,4 +26,7 @@ public interface PostMapper {
 
     @Select("select count(1) from post where creater=#{userId}")
     Integer countByUserId(@Param("userId") Integer userId);
+
+    @Select("select * from post where id=#{id}")
+    Post getById(@Param("id") Integer id);
 }
