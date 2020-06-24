@@ -5,6 +5,7 @@ import com.luntan.dto.GithubUser;
 import com.luntan.mapper.UserMapper;
 import com.luntan.model.User;
 import com.luntan.provider.GithubProvider;
+import com.luntan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class AuthorizeController {
     private String redirectUri;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name="code") String code,
@@ -51,18 +52,24 @@ public class AuthorizeController {
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatar_url());
-            userMapper.insert(user);
+            userService.createOrUpdate(user);
             response.addCookie(new Cookie("token", token));
-            //登陆成功，写cookie和session
-            request.getSession().setAttribute("githubUser",githubUser);
             return "redirect:/";
 
         }else {
             //登陆失败，重新登陆
             return "redirect:/";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest httpServletRequest,
+                         HttpServletResponse httpServletResponse){
+        httpServletRequest.getSession().removeAttribute("user");
+        Cookie cookie=new Cookie("token",null);
+        cookie.setMaxAge(0);
+        httpServletResponse.addCookie(cookie);
+        return "redirect:/";
     }
 }
