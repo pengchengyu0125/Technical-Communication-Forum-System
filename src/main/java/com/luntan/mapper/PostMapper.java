@@ -3,10 +3,7 @@ package com.luntan.mapper;
 import com.luntan.dto.PostDTO;
 import com.luntan.model.Post;
 import com.luntan.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -29,4 +26,7 @@ public interface PostMapper {
 
     @Select("select * from post where id=#{id}")
     Post getById(@Param("id") Integer id);
+
+    @Update("update post set title=#{title}, description=#{description}, gmt_modified=#{gmtModified}, tag=#{tag} where id=#{id}")
+    void update(Post post);
 }
