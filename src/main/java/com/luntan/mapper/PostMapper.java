@@ -29,4 +29,7 @@ public interface PostMapper {
 
     @Update("update post set title=#{title}, description=#{description}, gmt_modified=#{gmtModified}, tag=#{tag} where id=#{id}")
     void update(Post post);
+
+    @Update("update post set view_count=view_count+1 where id=#{id}")
+    void updateViewCount(Post post);
 }

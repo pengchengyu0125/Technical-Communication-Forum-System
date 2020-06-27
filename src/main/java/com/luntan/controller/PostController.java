@@ -18,6 +18,8 @@ public class PostController {
     public String post(@PathVariable(name="id") Integer id,
                        Model model){
         PostDTO postDTO=postService.getById(id);
+        //记录阅读数
+        postService.incView(id);
         model.addAttribute("post",postDTO);
         return "post";
     }

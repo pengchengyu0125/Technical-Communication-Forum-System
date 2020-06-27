@@ -108,4 +108,9 @@ public class PostService {
             postMapper.update(post);
         }
     }
+
+    public void incView(Integer id) {
+        Post post=postMapper.getById(id);
+        postMapper.updateViewCount(post);
+    }
 }
