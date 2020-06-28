@@ -1,8 +1,6 @@
 package com.luntan.mapper;
 
-import com.luntan.dto.PostDTO;
 import com.luntan.model.Post;
-import com.luntan.model.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
