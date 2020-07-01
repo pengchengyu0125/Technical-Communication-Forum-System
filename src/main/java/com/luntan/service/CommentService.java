@@ -17,13 +17,13 @@ public class CommentService {
 
     public void insert(Comment comment){
         if (comment.getType()==1){
-            Comment dbComment=commentMapper.getById(comment.getParentId());
-            commentMapper.insert(comment);
-        }
-        else {
             Post post=postMapper.getById(comment.getParentId());
             commentMapper.insert(comment);
             postMapper.updateCommentCount(post);
+        }
+        else {
+            Comment dbComment=commentMapper.getById(comment.getParentId());
+            commentMapper.insert(comment);
         }
     }
 }
