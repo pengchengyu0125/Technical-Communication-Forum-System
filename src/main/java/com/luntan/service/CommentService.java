@@ -16,14 +16,14 @@ public class CommentService {
     private PostMapper postMapper;
 
     public void insert(Comment comment){
-        if (comment.getType()==1){
+        if (comment.getType()==2){//回复评论
+            Comment dbComment=commentMapper.getById(comment.getParentId());
+            commentMapper.insert(comment);
+        }
+        else {//回复问题
             Post post=postMapper.getById(comment.getParentId());
             commentMapper.insert(comment);
             postMapper.updateCommentCount(post);
-        }
-        else {
-            Comment dbComment=commentMapper.getById(comment.getParentId());
-            commentMapper.insert(comment);
         }
     }
 }

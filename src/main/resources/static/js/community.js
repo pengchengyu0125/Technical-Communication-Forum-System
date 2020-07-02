@@ -11,7 +11,7 @@ function post(){
             "type": 1
         }),
         success: function(response){
-            console.log(response);
+            $("#comment_section").hide();
         },
         dataType: "json"
     });
