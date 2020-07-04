@@ -35,22 +35,22 @@
             <h4>
                 <span th:text="${post.commentCount}"></span> replies
             </h4>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comments" th:each="comment:${comments}">
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object img-rounded" th:src="${post.user.avatarUrl}">
+                            <img class="media-object img-rounded" th:src="${comment.user.avatarUrl}">
                         </a>
                     </div>
                     <div class="media-body">
                         <h5 class="media-heading">
-                            <span th:text="${post.user.name}"></span>
+                            <span th:text="${comment.user.name}"></span>
                         </h5>
-                        <div>回复内容</div>
+                        <div th:text="${comment.content}"></div>
                         <div class="menu">
                             <span class="icon glyphicon glyphicon-thumbs-up"></span>
                             <span class="icon glyphicon glyphicon-comment"></span>
-                            <span class="pull-right" th:text="${#dates.format(post.gmtCreate,'dd MMMM yyyy')}"></span>
+                            <span class="pull-right" th:text="${#dates.format(comment.gmtCreate,'dd MMMM yyyy')}"></span>
                         </div>
                     </div>
                 </div>
