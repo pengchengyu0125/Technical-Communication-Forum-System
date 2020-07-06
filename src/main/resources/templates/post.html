@@ -71,6 +71,7 @@
                     </div>
                 </div>
                 <input type="hidden" id="post_id" th:value="${post.id}">
+                <input type="hidden" id="commentator" th:value="${session.user.id}">
                 <textarea class="form-control comment" rows="6" id="comment_content"></textarea>
                 <button type="button" class="btn btn-success comment-btn" onclick="post()">Reply</button>
             </div>
