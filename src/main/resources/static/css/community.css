@@ -48,6 +48,9 @@ body{
     font-size: 15px;
     cursor: pointer;
 }
+.active{
+    color: #499ef3;
+}
 .icon:hover{
     color: #499ef3;
 }
