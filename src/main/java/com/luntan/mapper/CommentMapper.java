@@ -20,4 +20,7 @@ public interface CommentMapper {
 
     @Select("select * from comment where parent_id=#{parentId}")
     List<Comment> selectByParentId(Integer parentId);
+
+    @Select("select * from comment where parent_id=#{id} and type=2")
+    List<Comment> selectReply(Integer id);
 }

@@ -1,11 +1,15 @@
 package com.luntan.controller;
 
 import com.luntan.dto.CommentCreateDTO;
+import com.luntan.dto.CommentDTO;
+import com.luntan.dto.ResultDTO;
 import com.luntan.model.Comment;
 import com.luntan.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -26,5 +30,12 @@ public class CommentController {
         comment.setCommentator(commentCreateDTO.getCommentator());
         commentService.insert(comment);
         return null;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
+    public ResultDTO<List<CommentDTO>> comments(@PathVariable(name = "id") Integer id){
+        List<CommentDTO> commentDTOS=commentService.listByCommentId(id);
+        return ResultDTO.ok(commentDTOS);
     }
 }

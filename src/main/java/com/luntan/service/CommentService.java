@@ -62,4 +62,27 @@ public class CommentService {
         }).collect(Collectors.toList());
         return commentDTOS;
     }
+
+    public List<CommentDTO> listByCommentId(Integer id) {
+        List<Comment> comments=commentMapper.selectReply(id);
+        if (comments.size()==0)
+            return new ArrayList<>();
+
+        //获取去重评论人
+        Set<Integer> commentators=comments.stream().map(comment -> comment.getCommentator()).collect(Collectors.toSet());
+        List<Integer> userIds=new ArrayList<>();
+        userIds.addAll(commentators);
+
+        List<User> users=new ArrayList<>();
+        for (int i=0;i<userIds.size();i++){
+            users.add(userMapper.findById(userIds.get(i)));
+        }
+        Map<Integer,User> userMap=users.stream().collect(Collectors.toMap(user -> user.getId(), user -> user));
+        List<CommentDTO> commentDTOS=comments.stream().map(comment -> {CommentDTO commentDTO=new CommentDTO();
+            BeanUtils.copyProperties(comment,commentDTO);
+            commentDTO.setUser(userMap.get(comment.getCommentator()));
+            return commentDTO;
+        }).collect(Collectors.toList());
+        return commentDTOS;
+    }
 }
