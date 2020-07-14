@@ -2,10 +2,7 @@ package com.luntan.mapper;
 
 import com.luntan.model.Comment;
 import com.luntan.model.Post;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -23,4 +20,7 @@ public interface CommentMapper {
 
     @Select("select * from comment where parent_id=#{id} and type=2")
     List<Comment> selectReply(Integer id);
+
+    @Update("update comment set comment_count=comment_count+1 where id=#{id}")
+    void updateCommentCount(Integer id);
 }

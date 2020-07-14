@@ -32,6 +32,7 @@ public class CommentService {
         if (comment.getType()==2){//回复评论
             Comment dbComment=commentMapper.getById(comment.getParentId());
             commentMapper.insert(comment);
+            commentMapper.updateCommentCount(comment.getParentId());
         }
         else {//回复问题
             Post post=postMapper.getById(comment.getParentId());
