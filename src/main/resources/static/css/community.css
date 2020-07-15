@@ -64,3 +64,6 @@ body{
 .icon:hover{
     color: #499ef3;
 }
+.post-tag{
+    margin-right: 5px;
+}
