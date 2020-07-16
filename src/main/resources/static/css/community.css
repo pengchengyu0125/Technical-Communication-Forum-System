@@ -67,3 +67,10 @@ body{
 .post-tag{
     margin-right: 5px;
 }
+.post-related{
+    line-height: 25px;
+    font-size: 18px;
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
+}

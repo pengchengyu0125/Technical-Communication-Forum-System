@@ -6,12 +6,15 @@ import com.luntan.mapper.PostMapper;
 import com.luntan.mapper.UserMapper;
 import com.luntan.model.Post;
 import com.luntan.model.User;
+import com.mysql.cj.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -112,5 +115,25 @@ public class PostService {
     public void incView(Integer id) {
         Post post=postMapper.getById(id);
         postMapper.updateViewCount(post);
+    }
+
+    public List<PostDTO> selectRelated(PostDTO queryDTO) {
+        if (queryDTO.getTag()==null){
+            return new ArrayList<>();
+        }
+        String[] tags=queryDTO.getTag().split(",");
+        String attachTag=tags[0];
+        for (int i=1;i<tags.length;i++){
+            attachTag=attachTag+"|"+tags[i];
+        }
+        Post post=new Post();
+        post.setId(queryDTO.getId());
+        post.setTag(attachTag);
+        List<Post>posts=postMapper.selectRelated(post);
+        List<PostDTO> postDTOS=posts.stream().map(q->{PostDTO postDTO=new PostDTO();
+        BeanUtils.copyProperties(q,postDTO);
+        return postDTO;
+        }).collect(Collectors.toList());
+        return postDTOS;
     }
 }

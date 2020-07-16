@@ -1,5 +1,6 @@
 package com.luntan.mapper;
 
+import com.luntan.dto.PostDTO;
 import com.luntan.model.Post;
 import org.apache.ibatis.annotations.*;
 
@@ -33,4 +34,7 @@ public interface PostMapper {
 
     @Update("update post set comment_count=comment_count+1 where id=#{id}")
     void updateCommentCount(Post post);
+
+    @Select("select * from post where id!=#{id} and tag regexp #{tag}")
+    List<Post> selectRelated(Post post);
 }

@@ -3,6 +3,7 @@ package com.luntan.controller;
 import com.luntan.dto.CommentCreateDTO;
 import com.luntan.dto.CommentDTO;
 import com.luntan.dto.PostDTO;
+import com.luntan.model.Post;
 import com.luntan.service.CommentService;
 import com.luntan.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,12 @@ public class PostController {
                        Model model){
         PostDTO postDTO=postService.getById(id);
         List<CommentDTO> comments=commentService.listByPostId(id);
+        List<PostDTO> relatedPosts=postService.selectRelated(postDTO);
         //记录阅读数
         postService.incView(id);
         model.addAttribute("post",postDTO);
         model.addAttribute("comments",comments);
+        model.addAttribute("relatedPosts",relatedPosts);
         return "post";
     }
 }
