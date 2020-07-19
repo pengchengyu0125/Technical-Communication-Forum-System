@@ -2,9 +2,11 @@ package com.luntan.service;
 
 import com.luntan.dto.CommentDTO;
 import com.luntan.mapper.CommentMapper;
+import com.luntan.mapper.NotificationMapper;
 import com.luntan.mapper.PostMapper;
 import com.luntan.mapper.UserMapper;
 import com.luntan.model.Comment;
+import com.luntan.model.Notification;
 import com.luntan.model.Post;
 import com.luntan.model.User;
 import org.springframework.beans.BeanUtils;
@@ -28,17 +30,35 @@ public class CommentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private NotificationMapper notificationMapper;
+
     public void insert(Comment comment){
         if (comment.getType()==2){//回复评论
             Comment dbComment=commentMapper.getById(comment.getParentId());
             commentMapper.insert(comment);
             commentMapper.updateCommentCount(comment.getParentId());
+            //创建通知
+            createCommentNotify(comment, dbComment.getCommentator(), 2);
         }
         else {//回复问题
             Post post=postMapper.getById(comment.getParentId());
             commentMapper.insert(comment);
             postMapper.updateCommentCount(post);
+            //创建通知
+            createCommentNotify(comment, post.getCreater(), 1);
         }
+    }
+
+    private void createCommentNotify(Comment comment, Integer creater, int i) {
+        Notification notification = new Notification();
+        notification.setNotifier(comment.getCommentator());
+        notification.setReceiver(creater);
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setOuterId(comment.getParentId());
+        notification.setType(i);
+        notification.setStatus(0);
+        notificationMapper.insert(notification);
     }
 
     public List<CommentDTO> listByPostId(Integer id) {
