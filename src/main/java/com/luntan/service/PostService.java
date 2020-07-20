@@ -52,7 +52,7 @@ public class PostService {
             postDTO.setUser(user);
             postDTOList.add(postDTO);
         }
-        pageDTO.setPosts(postDTOList);
+        pageDTO.setData(postDTOList);
 
         return pageDTO;
     }
@@ -85,7 +85,7 @@ public class PostService {
             postDTO.setUser(user);
             postDTOList.add(postDTO);
         }
-        pageDTO.setPosts(postDTOList);
+        pageDTO.setData(postDTOList);
         return pageDTO;
     }
 
