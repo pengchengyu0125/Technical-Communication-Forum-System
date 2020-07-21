@@ -62,4 +62,17 @@ public class NotificationService {
     public Integer unreadCount(Integer id) {
         return notificationMapper.unreadCount(id);
     }
+
+    public NotificationDTO read(Integer id, User user) {
+        Notification notification=notificationMapper.selectById(id);
+        NotificationDTO notificationDTO = new NotificationDTO();
+        if (notification.getReceiver()==user.getId()){
+            BeanUtils.copyProperties(notification,notificationDTO);
+        }
+        if (notification.getType()==2){
+            notificationDTO.setOuterId(notificationMapper.getParentId(notification.getOuterId()));
+        }
+        notificationMapper.updateStatus(id);
+        return notificationDTO;
+    }
 }

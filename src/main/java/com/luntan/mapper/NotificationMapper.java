@@ -2,10 +2,7 @@ package com.luntan.mapper;
 
 import com.luntan.model.Notification;
 import com.luntan.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -31,4 +28,13 @@ public interface NotificationMapper {
 
     @Select("select count(1) from notification where receiver=#{id} and status=0")
     Integer unreadCount(@Param("id") Integer id);
+
+    @Select("select * from notification where id=#{id}")
+    Notification selectById(@Param("id") Integer id);
+
+    @Select("select parent_id from comment where id=#{outerId}")
+    Integer getParentId(@Param("outerId") Integer outerId);
+
+    @Update("update notification set status=1 where id=#{id}")
+    void updateStatus(@Param("id") Integer id);
 }

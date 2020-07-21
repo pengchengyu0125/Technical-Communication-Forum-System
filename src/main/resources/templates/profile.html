@@ -36,9 +36,11 @@
                     <div class="media-body">
                         <h5 class="media-heading" th:if="${notification.type==1}">
                             <a th:href="@{'/notification/'+${notification.id}}" th:text="${notification.notifyName + ' 回复了你的问题 ' + notification.outerTitle}"></a>
+                            <span class="label label-danger" th:if="${notification.status==0}">未读</span>
                         </h5>
                         <h5 class="media-heading" th:if="${notification.type==2}">
                             <a th:href="@{'/notification/'+${notification.id}}" th:text="${notification.notifyName + ' 回复了你在问题 ' + notification.outerTitle} + ' 的评论'"></a>
+                            <span class="label label-danger" th:if="${notification.status==0}">未读</span>
                         </h5>
                     </div>
                 </div>
