@@ -2,6 +2,7 @@ package com.luntan.interceptor;
 
 import com.luntan.mapper.UserMapper;
 import com.luntan.model.User;
+import com.luntan.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -16,6 +17,9 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies=request.getCookies();
@@ -26,6 +30,8 @@ public class SessionInterceptor implements HandlerInterceptor {
                     User user=userMapper.findByToken(token);
                     if(user!=null){
                         request.getSession().setAttribute("user",user);
+                        Integer unreadCount=notificationService.unreadCount(user.getId());
+                        request.getSession().setAttribute("unreadCount",unreadCount);
                     }
                     break;
                 }

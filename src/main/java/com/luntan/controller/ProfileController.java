@@ -42,9 +42,7 @@ public class ProfileController {
             model.addAttribute("section","replies");
             model.addAttribute("sectionName","Latest Reply");
             PageDTO paginationDTO = notificationService.list(user.getId(), page, size);
-            Integer unreadCount=notificationService.unreadCount(user.getId());
             model.addAttribute("pagination",paginationDTO);
-            model.addAttribute("unreadCount",unreadCount);
         }
 
         return "profile";
