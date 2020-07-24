@@ -24,7 +24,8 @@ public class PostService {
     @Autowired
     private UserMapper userMapper;
 
-    public PageDTO list(Integer page, Integer size) {
+    public PageDTO list(String search, Integer page, Integer size) {
+
         PageDTO pageDTO = new PageDTO();
         Integer totalPage;
         Integer totalCount=postMapper.count();
@@ -43,6 +44,15 @@ public class PostService {
         pageDTO.setPagination(totalPage,page);
         Integer offset=size*(page-1);
         List<Post> posts = postMapper.list(offset,size);
+        if (search!=null){
+            String[] tags=search.split(" ");
+            String attachTag=tags[0];
+            for (int i=1;i<tags.length;i++){
+                attachTag=attachTag+"|"+tags[i];
+            }
+            search=attachTag;
+            posts=postMapper.listSearch(search,offset,size);
+        }
         List<PostDTO> postDTOList = new ArrayList<>();
 
         for(Post post : posts){

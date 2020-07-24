@@ -37,4 +37,7 @@ public interface PostMapper {
 
     @Select("select * from post where id!=#{id} and tag regexp #{tag}")
     List<Post> selectRelated(Post post);
+
+    @Select("select * from post where title regexp #{search} limit #{offset},#{size}")
+    List<Post> listSearch(@Param(value = "search") String search, @Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
 }
