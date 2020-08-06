@@ -24,7 +24,7 @@ public class PostService {
     @Autowired
     private UserMapper userMapper;
 
-    public PageDTO list(String search, Integer page, Integer size) {
+    public PageDTO list(String search, String tag, Integer page, Integer size) {
 
         PageDTO pageDTO = new PageDTO();
         Integer totalPage;
@@ -52,6 +52,9 @@ public class PostService {
             }
             search=attachTag;
             posts=postMapper.listSearch(search,offset,size);
+        }
+        if (tag!=null){
+            posts=postMapper.listSearch(tag,offset,size);
         }
         List<PostDTO> postDTOList = new ArrayList<>();
 
